@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { authService } from '@/lib/services';
 import Button from '@/components/Button';
 import Input from '@/components/Input';
@@ -54,17 +55,30 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 px-4 py-8">
-      <div className="max-w-md w-full bg-white rounded-xl shadow-lg p-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2 text-center">
+    <div className="min-h-screen flex items-center justify-center px-4 py-8" style={{ background: 'var(--color-bg)' }}>
+      <div className="max-w-md w-full rounded-xl shadow-lg p-8" style={{ backgroundColor: 'var(--color-surface)' }}>
+        <div className="flex justify-center mb-2">
+          <Image 
+            src="/finappai_logo.svg" 
+            alt="FinAppAI Logo" 
+            width={280} 
+            height={93}
+            priority
+          />
+        </div>
+        <h1 className="text-3xl font-bold mb-2 text-center" style={{ color: 'var(--color-text-primary)' }}>
           Crie sua conta
         </h1>
-        <p className="text-gray-600 mb-6 text-center">
-          Comece a gerenciar suas finanças
+        <p className="mb-6 text-center" style={{ color: 'var(--color-text-secondary)' }}>
+          Comece a gerenciar suas finanças com IA
         </p>
 
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg mb-4">
+          <div className="px-4 py-3 rounded-lg mb-4" style={{ 
+            backgroundColor: 'rgba(255, 82, 82, 0.1)', 
+            border: '1px solid var(--color-error)', 
+            color: 'var(--color-error)' 
+          }}>
             {error}
           </div>
         )}
@@ -135,9 +149,9 @@ export default function RegisterPage() {
           </Button>
         </form>
 
-        <p className="mt-6 text-center text-gray-600">
+        <p className="mt-6 text-center" style={{ color: 'var(--color-text-secondary)' }}>
           Já tem uma conta?{' '}
-          <Link href="/login" className="text-indigo-600 hover:text-indigo-700 font-medium">
+          <Link href="/login" className="font-medium" style={{ color: 'var(--color-primary)' }}>
             Entrar
           </Link>
         </p>

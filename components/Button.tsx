@@ -13,21 +13,32 @@ export default function Button({
 }: ButtonProps) {
   const baseClasses = 'px-4 py-2 rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed';
   
-  const variantClasses = {
-    primary: 'bg-indigo-600 text-white hover:bg-indigo-700',
-    secondary: 'bg-white text-indigo-600 border-2 border-indigo-600 hover:bg-indigo-50',
-    danger: 'bg-red-600 text-white hover:bg-red-700',
+  const variantStyles = {
+    primary: {
+      backgroundColor: 'var(--color-primary)',
+      color: 'var(--color-bg)',
+    },
+    secondary: {
+      backgroundColor: 'var(--color-surface)',
+      color: 'var(--color-primary)',
+      border: '2px solid var(--color-primary)',
+    },
+    danger: {
+      backgroundColor: 'var(--color-error)',
+      color: 'var(--color-text-primary)',
+    },
   };
 
   return (
     <button 
-      className={`${baseClasses} ${variantClasses[variant]} ${className}`}
+      className={`${baseClasses} ${className}`}
+      style={variantStyles[variant]}
       disabled={disabled || loading}
       {...props}
     >
       {loading ? (
         <div className="flex items-center justify-center">
-          <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-white"></div>
+          <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2" style={{ borderTopColor: variant === 'primary' ? 'var(--color-bg)' : 'var(--color-primary)', borderBottomColor: variant === 'primary' ? 'var(--color-bg)' : 'var(--color-primary)' }}></div>
         </div>
       ) : (
         children

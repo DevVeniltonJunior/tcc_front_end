@@ -2,8 +2,13 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Sistema de Gerenciamento Financeiro",
-  description: "Gerencie suas finanças pessoais de forma inteligente",
+  title: "FinAppAI",
+  description: "Gerencie suas finanças pessoais de forma inteligente!",
+  icons: {
+    icon: '/finappai_icon.svg',
+    shortcut: '/finappai_icon.png',
+    apple: '/finappai_icon.png',
+  },
 };
 
 export default function RootLayout({
