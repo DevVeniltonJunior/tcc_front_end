@@ -1,5 +1,5 @@
 import api from '../api';
-import { User, UpdateUserRequest, UserFilters } from '@/types';
+import { User, UpdateUserRequest, UserFilters, UserSummary } from '@/types';
 
 export const userService = {
   async getUser(params?: { id?: string; email?: string }): Promise<User> {
@@ -24,6 +24,11 @@ export const userService = {
 
   async deleteUser(id: string): Promise<{ message: string }> {
     const response = await api.delete<{ message: string }>(`/users/${id}`);
+    return response.data;
+  },
+
+  async getUserSummary(): Promise<UserSummary> {
+    const response = await api.get<UserSummary>('/user-summary');
     return response.data;
   },
 };
