@@ -13,9 +13,9 @@ export const planningService = {
     limit: number = 20,
     sortBy: string = "createdAt",
     order: string = "desc"
-  ): Promise<Planning[]> {
+  ): Promise<PaginatedResponse<Planning>> {
     const response = await api.get<PaginatedResponse<Planning>>('/plannings', { params: { ...filters, page, limit, sortBy, order } });
-    return response.data.data;
+    return response.data;
   },
 
   async createPlanning(data: CreatePlanningRequest): Promise<Planning> {

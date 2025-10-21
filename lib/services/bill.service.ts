@@ -13,9 +13,9 @@ export const billService = {
     limit: number = 20,
     sortBy: string = "createdAt",
     order: string = "desc"
-  ): Promise<Bill[]> {
+  ): Promise<PaginatedResponse<Bill>> {
     const response = await api.get<PaginatedResponse<Bill>>('/bills', { params: { ...filters, page, limit, sortBy, order } });
-    return response.data.data;
+    return response.data;
   },
 
   async createBill(data: CreateBillRequest): Promise<Bill> {

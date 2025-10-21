@@ -8,6 +8,7 @@ import Loading from '@/components/Loading';
 import Button from '@/components/Button';
 import Tabs from '@/components/Tabs';
 import BillModal from '@/components/BillModal';
+import Pagination from '@/components/Pagination';
 import { billService } from '@/lib/services';
 import { Bill, CreateBillRequest, UpdateBillRequest } from '@/types';
 
@@ -19,23 +20,33 @@ export default function ContasPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingBill, setEditingBill] = useState<Bill | undefined>(undefined);
   const [modalMode, setModalMode] = useState<'create' | 'edit'>('create');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalItems, setTotalItems] = useState(0);
+  const itemsPerPage = 10;
 
   const fetchBills = useCallback(async () => {
     try {
       setLoadingBills(true);
       if (user?.id) {
-        const dataFetched = await billService.getBills({ userId: user.id, deletedAt: null });
+        const response = await billService.getBills(
+          { userId: user.id, deletedAt: null },
+          currentPage,
+          itemsPerPage,
+          "createdAt",
+          "desc"
+        );
         
-        const data = dataFetched.filter(bill => bill.userId === user.id && !bill.deletedAt);
-
-        setBills(data);
+        setBills(response.data || []);
+        setTotalItems(response.pagination.total || 0);
       }
     } catch (error) {
       console.error('Erro ao buscar contas:', error);
+      setBills([]);
+      setTotalItems(0);
     } finally {
       setLoadingBills(false);
     }
-  }, [user?.id]);
+  }, [user?.id, currentPage, itemsPerPage]);
 
   useEffect(() => {
     if (!loading && !isAuthenticated) {
@@ -72,6 +83,8 @@ export default function ContasPage() {
     } else {
       await billService.updateBill(data as UpdateBillRequest);
     }
+    // Voltar para a primeira página após criar/editar
+    setCurrentPage(1);
     await fetchBills();
   };
 
@@ -81,11 +94,20 @@ export default function ContasPage() {
     }
     try {
       await billService.deleteBill(billId);
+      // Se estamos na última página e era o único item, voltar para a página anterior
+      if (bills.length === 1 && currentPage > 1) {
+        setCurrentPage(currentPage - 1);
+      }
       await fetchBills();
     } catch (error) {
       console.error('Erro ao excluir conta:', error);
       alert('Erro ao excluir conta. Tente novamente.');
     }
+  };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   if (loading || loadingBills) {
@@ -174,52 +196,62 @@ export default function ContasPage() {
             </Button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 gap-3 sm:gap-4">
-            {bills.map((bill) => (
-              <div 
-                key={bill.id}
-                className="rounded-lg shadow p-4 sm:p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4"
-                style={{ backgroundColor: 'var(--color-surface)', border: '1px solid var(--color-border)' }}
-              >
-                <div className="flex-1 w-full sm:w-auto">
-                  <h3 className="text-lg sm:text-xl font-semibold mb-2" style={{ color: 'var(--color-text-primary)' }}>
-                    {bill.name}
-                  </h3>
-                  {bill.description && (
-                    <p className="text-sm mb-2" style={{ color: 'var(--color-text-secondary)' }}>
-                      {bill.description}
-                    </p>
-                  )}
-                  <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 text-sm">
-                    <span style={{ color: 'var(--color-text-secondary)' }}>
-                      Valor: <strong style={{ color: 'var(--color-primary)' }}>R$ {bill.value.toFixed(2)}</strong>
-                    </span>
-                    {bill.installmentsNumber && (
-                      <span style={{ color: 'var(--color-text-secondary)' }}>
-                        Parcelas: <strong>{bill.installmentsNumber}x</strong>
-                      </span>
+          <>
+            <div className="grid grid-cols-1 gap-3 sm:gap-4">
+              {bills.map((bill) => (
+                <div 
+                  key={bill.id}
+                  className="rounded-lg shadow p-4 sm:p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4"
+                  style={{ backgroundColor: 'var(--color-surface)', border: '1px solid var(--color-border)' }}
+                >
+                  <div className="flex-1 w-full sm:w-auto">
+                    <h3 className="text-lg sm:text-xl font-semibold mb-2" style={{ color: 'var(--color-text-primary)' }}>
+                      {bill.name}
+                    </h3>
+                    {bill.description && (
+                      <p className="text-sm mb-2" style={{ color: 'var(--color-text-secondary)' }}>
+                        {bill.description}
+                      </p>
                     )}
+                    <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 text-sm">
+                      <span style={{ color: 'var(--color-text-secondary)' }}>
+                        Valor: <strong style={{ color: 'var(--color-primary)' }}>R$ {bill.value.toFixed(2)}</strong>
+                      </span>
+                      {bill.installmentsNumber && (
+                        <span style={{ color: 'var(--color-text-secondary)' }}>
+                          Parcelas: <strong>{bill.installmentsNumber}x</strong>
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                  <div className="flex gap-2 w-full sm:w-auto">
+                    <Button variant="secondary" className="flex-1 sm:flex-none px-3 sm:px-4 py-2 text-xs sm:text-sm" onClick={() => handleOpenEditModal(bill)}>
+                      Editar
+                    </Button>
+                    <Button 
+                      variant="secondary" 
+                      className="flex-1 sm:flex-none px-3 sm:px-4 py-2 text-xs sm:text-sm"
+                      onClick={() => handleDeleteBill(bill.id)}
+                      style={{ 
+                        backgroundColor: 'var(--color-error)',
+                        color: 'white'
+                      }}
+                    >
+                      Excluir
+                    </Button>
                   </div>
                 </div>
-                <div className="flex gap-2 w-full sm:w-auto">
-                  <Button variant="secondary" className="flex-1 sm:flex-none px-3 sm:px-4 py-2 text-xs sm:text-sm" onClick={() => handleOpenEditModal(bill)}>
-                    Editar
-                  </Button>
-                  <Button 
-                    variant="secondary" 
-                    className="flex-1 sm:flex-none px-3 sm:px-4 py-2 text-xs sm:text-sm"
-                    onClick={() => handleDeleteBill(bill.id)}
-                    style={{ 
-                      backgroundColor: 'var(--color-error)',
-                      color: 'white'
-                    }}
-                  >
-                    Excluir
-                  </Button>
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+            
+            {/* Pagination */}
+            <Pagination
+              currentPage={currentPage}
+              totalItems={totalItems}
+              itemsPerPage={itemsPerPage}
+              onPageChange={handlePageChange}
+            />
+          </>
         )}
 
         {/* Summary Card */}

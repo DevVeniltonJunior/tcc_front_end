@@ -9,6 +9,7 @@ import Button from '@/components/Button';
 import Tabs from '@/components/Tabs';
 import PlanningModal from '@/components/PlanningModal';
 import GeneratePlanningModal from '@/components/GeneratePlanningModal';
+import Pagination from '@/components/Pagination';
 import { planningService } from '@/lib/services';
 import { Planning, CreatePlanningRequest, UpdatePlanningRequest, GeneratePlanningRequest } from '@/types';
 
@@ -21,22 +22,33 @@ export default function PlanejamentoPage() {
   const [isGenerateModalOpen, setIsGenerateModalOpen] = useState(false);
   const [editingPlanning, setEditingPlanning] = useState<Planning | undefined>(undefined);
   const [modalMode, setModalMode] = useState<'create' | 'edit'>('create');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalItems, setTotalItems] = useState(0);
+  const itemsPerPage = 4;
 
   const fetchPlannings = useCallback(async () => {
     try {
       setLoadingPlannings(true);
       if (user?.id) {
-        const dataFetched = await planningService.getPlannings({ userId: user.id, deletedAt: null });
-        const data = dataFetched.filter(planning => planning.userId === user.id && !planning.deletedAt);
+        const response = await planningService.getPlannings(
+          { userId: user.id, deletedAt: null },
+          currentPage,
+          itemsPerPage,
+          "createdAt",
+          "desc"
+        );
 
-        setPlannings(data);
+        setPlannings(response.data || []);
+        setTotalItems(response.pagination.total || 0);
       }
     } catch (error) {
       console.error('Erro ao buscar planejamentos:', error);
+      setPlannings([]);
+      setTotalItems(0);
     } finally {
       setLoadingPlannings(false);
     }
-  }, [user?.id]);
+  }, [user?.id, currentPage, itemsPerPage]);
 
   useEffect(() => {
     if (!loading && !isAuthenticated) {
@@ -81,11 +93,15 @@ export default function PlanejamentoPage() {
     } else {
       await planningService.updatePlanning(data as UpdatePlanningRequest);
     }
+    // Voltar para a primeira página após criar/editar
+    setCurrentPage(1);
     await fetchPlannings();
   };
 
   const handleGeneratePlanning = async (data: GeneratePlanningRequest) => {
     await planningService.generatePlanning(data);
+    // Voltar para a primeira página após gerar
+    setCurrentPage(1);
     await fetchPlannings();
   };
 
@@ -95,11 +111,20 @@ export default function PlanejamentoPage() {
     }
     try {
       await planningService.deletePlanning(planningId);
+      // Se estamos na última página e era o único item, voltar para a página anterior
+      if (plannings.length === 1 && currentPage > 1) {
+        setCurrentPage(currentPage - 1);
+      }
       await fetchPlannings();
     } catch (error) {
       console.error('Erro ao excluir planejamento:', error);
       alert('Erro ao excluir planejamento. Tente novamente.');
     }
+  };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   if (loading || loadingPlannings) {
@@ -198,62 +223,72 @@ export default function PlanejamentoPage() {
             </div>
           </div>
         ) : (
-          <div className="grid grid-cols-1 gap-3 sm:gap-4">
-            {plannings.map((planning) => (
-              <div 
-                key={planning.id}
-                className="rounded-lg shadow p-4 sm:p-6"
-                style={{ backgroundColor: 'var(--color-surface)', border: '1px solid var(--color-border)' }}
-              >
-                <div className="flex flex-col sm:flex-row justify-between items-start gap-4 mb-4">
-                  <div className="flex-1 w-full sm:w-auto">
-                    <h3 className="text-lg sm:text-xl font-semibold mb-2" style={{ color: 'var(--color-text-primary)' }}>
-                      {planning.name}
-                    </h3>
-                    {planning.description && (
-                      <p className="text-sm mb-3" style={{ color: 'var(--color-text-secondary)' }}>
-                        {planning.description}
-                      </p>
-                    )}
-                    <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 text-sm mb-3">
-                      <span style={{ color: 'var(--color-text-secondary)' }}>
-                        Meta: <strong style={{ color: 'var(--color-primary)' }}>{planning.goal}</strong>
-                      </span>
-                      <span style={{ color: 'var(--color-text-secondary)' }}>
-                        Valor: <strong style={{ color: 'var(--color-success)' }}>R$ {planning.goalValue.toFixed(2)}</strong>
-                      </span>
+          <>
+            <div className="grid grid-cols-1 gap-3 sm:gap-4">
+              {plannings.map((planning) => (
+                <div 
+                  key={planning.id}
+                  className="rounded-lg shadow p-4 sm:p-6"
+                  style={{ backgroundColor: 'var(--color-surface)', border: '1px solid var(--color-border)' }}
+                >
+                  <div className="flex flex-col sm:flex-row justify-between items-start gap-4 mb-4">
+                    <div className="flex-1 w-full sm:w-auto">
+                      <h3 className="text-lg sm:text-xl font-semibold mb-2" style={{ color: 'var(--color-text-primary)' }}>
+                        {planning.name}
+                      </h3>
+                      {planning.description && (
+                        <p className="text-sm mb-3" style={{ color: 'var(--color-text-secondary)' }}>
+                          {planning.description}
+                        </p>
+                      )}
+                      <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 text-sm mb-3">
+                        <span style={{ color: 'var(--color-text-secondary)' }}>
+                          Meta: <strong style={{ color: 'var(--color-primary)' }}>{planning.goal}</strong>
+                        </span>
+                        <span style={{ color: 'var(--color-text-secondary)' }}>
+                          Valor: <strong style={{ color: 'var(--color-success)' }}>R$ {planning.goalValue.toFixed(2)}</strong>
+                        </span>
+                      </div>
+                    </div>
+                    <div className="flex gap-2 w-full sm:w-auto">
+                      <Button variant="secondary" className="flex-1 sm:flex-none px-3 sm:px-4 py-2 text-xs sm:text-sm" onClick={() => handleOpenEditModal(planning)}>
+                        Editar
+                      </Button>
+                      <Button 
+                        variant="secondary" 
+                        className="flex-1 sm:flex-none px-3 sm:px-4 py-2 text-xs sm:text-sm"
+                        onClick={() => handleDeletePlanning(planning.id)}
+                        style={{ 
+                          backgroundColor: 'var(--color-error)',
+                          color: 'white'
+                        }}
+                      >
+                        Excluir
+                      </Button>
                     </div>
                   </div>
-                  <div className="flex gap-2 w-full sm:w-auto">
-                    <Button variant="secondary" className="flex-1 sm:flex-none px-3 sm:px-4 py-2 text-xs sm:text-sm" onClick={() => handleOpenEditModal(planning)}>
-                      Editar
-                    </Button>
-                    <Button 
-                      variant="secondary" 
-                      className="flex-1 sm:flex-none px-3 sm:px-4 py-2 text-xs sm:text-sm"
-                      onClick={() => handleDeletePlanning(planning.id)}
-                      style={{ 
-                        backgroundColor: 'var(--color-error)',
-                        color: 'white'
-                      }}
-                    >
-                      Excluir
-                    </Button>
+                  
+                  {/* Planning Details */}
+                  <div className="rounded p-3 sm:p-4" style={{ backgroundColor: 'var(--color-bg)' }}>
+                    <h4 className="text-sm sm:text-base font-semibold mb-2" style={{ color: 'var(--color-text-primary)' }}>
+                      Plano de Ação
+                    </h4>
+                    <p className="text-xs sm:text-sm whitespace-pre-wrap" style={{ color: 'var(--color-text-secondary)' }}>
+                      {planning.plan}
+                    </p>
                   </div>
                 </div>
-                
-                {/* Planning Details */}
-                <div className="rounded p-3 sm:p-4" style={{ backgroundColor: 'var(--color-bg)' }}>
-                  <h4 className="text-sm sm:text-base font-semibold mb-2" style={{ color: 'var(--color-text-primary)' }}>
-                    Plano de Ação
-                  </h4>
-                  <p className="text-xs sm:text-sm whitespace-pre-wrap" style={{ color: 'var(--color-text-secondary)' }}>
-                    {planning.plan}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+            
+            {/* Pagination */}
+            <Pagination
+              currentPage={currentPage}
+              totalItems={totalItems}
+              itemsPerPage={itemsPerPage}
+              onPageChange={handlePageChange}
+            />
+          </>
         )}
 
         {/* Summary Card */}
