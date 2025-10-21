@@ -26,7 +26,9 @@ export default function PlanejamentoPage() {
     try {
       setLoadingPlannings(true);
       if (user?.id) {
-        const data = await planningService.getPlannings({ userId: user.id });
+        const dataFetched = await planningService.getPlannings({ userId: user.id, deletedAt: null });
+        const data = dataFetched.filter(planning => planning.userId === user.id && !planning.deletedAt);
+
         setPlannings(data);
       }
     } catch (error) {

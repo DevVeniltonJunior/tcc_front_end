@@ -24,7 +24,10 @@ export default function ContasPage() {
     try {
       setLoadingBills(true);
       if (user?.id) {
-        const data = await billService.getBills({ userId: user.id });
+        const dataFetched = await billService.getBills({ userId: user.id, deletedAt: null });
+        
+        const data = dataFetched.filter(bill => bill.userId === user.id && !bill.deletedAt);
+
         setBills(data);
       }
     } catch (error) {

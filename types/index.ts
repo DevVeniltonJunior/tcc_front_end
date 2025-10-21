@@ -5,10 +5,10 @@ export interface User {
   name: string;
   email: string;
   birthdate: string;
-  salary?: number;
+  salary?: number | null;
   createdAt: string;
-  updatedAt?: string;
-  deletedAt?: string;
+  updatedAt?: string | null;
+  deletedAt?: string | null;
 }
 
 export interface Bill {
@@ -16,24 +16,24 @@ export interface Bill {
   userId: string;
   name: string;
   value: number;
-  description?: string;
-  installmentsNumber?: number;
+  description?: string | null;
+  installmentsNumber?: number | null;
   createdAt: string;
-  updatedAt?: string;
-  deletedAt?: string;
+  updatedAt?: string | null;
+  deletedAt?: string | null;
 }
 
 export interface Planning {
   id: string;
   userId: string;
   name: string;
-  description?: string;
+  description?: string | null;
   goal: string;
   goalValue: number;
   plan: string;
   createdAt: string;
-  updatedAt?: string;
-  deletedAt?: string;
+  updatedAt?: string | null;
+  deletedAt?: string | null;
 }
 
 // Tipos de requisição
@@ -112,39 +112,39 @@ export interface ResetPasswordRequest {
 
 // Tipos de filtro
 export interface BillFilters {
-  id?: string;
-  userId?: string;
-  name?: string;
-  value?: number;
-  description?: string;
-  installmentsNumber?: number;
-  createdAt?: string;
-  updatedAt?: string;
-  deletedAt?: string;
+  id?: string | null;
+  userId?: string | null;
+  name?: string | null;
+  value?: number | null;
+  description?: string | null;
+  installmentsNumber?: number | null;
+  createdAt?: string | null;
+  updatedAt?: string | null;
+  deletedAt?: string | null;
 }
 
 export interface PlanningFilters {
-  id?: string;
-  userId?: string;
-  name?: string;
-  description?: string;
-  goal?: string;
-  goalValue?: number;
-  plan?: string;
-  createdAt?: string;
-  updatedAt?: string;
-  deletedAt?: string;
+  id?: string | null;
+  userId?: string | null;
+  name?: string | null;
+  description?: string | null;
+  goal?: string | null;
+  goalValue?: number | null;
+  plan?: string | null;
+  createdAt?: string | null;
+  updatedAt?: string | null;
+  deletedAt?: string | null;
 }
 
 export interface UserFilters {
-  id?: string;
-  name?: string;
-  email?: string;
-  birthdate?: string;
-  salary?: number;
-  createdAt?: string;
-  updatedAt?: string;
-  deletedAt?: string;
+  id?: string | null;
+  name?: string | null;
+  email?: string | null;
+  birthdate?: string | null;
+  salary?: number | null;
+  createdAt?: string | null;
+  updatedAt?: string | null;
+  deletedAt?: string | null;
 }
 
 export interface UserSummary {
