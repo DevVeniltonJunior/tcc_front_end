@@ -32,7 +32,8 @@ export default function DashboardPage() {
     try {
       setLoadingSummary(true);
       const data = await userService.getUserSummary();
-      setSummary(data);
+      // A API retorna os dados dentro de uma propriedade 'summary'
+      setSummary(data.summary || data);
     } catch (error) {
       console.error('Erro ao buscar resumo do usuário:', error);
     } finally {

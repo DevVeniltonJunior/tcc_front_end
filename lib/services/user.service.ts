@@ -27,8 +27,8 @@ export const userService = {
     return response.data;
   },
 
-  async getUserSummary(): Promise<UserSummary> {
-    const response = await api.get<UserSummary>('/user-summary');
+  async getUserSummary(): Promise<{ summary: UserSummary }> {
+    const response = await api.get<{ summary: UserSummary }>('/user-summary');
     return response.data;
   },
 };
