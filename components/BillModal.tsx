@@ -148,11 +148,15 @@ export default function BillModal({ isOpen, onClose, onSave, bill, mode }: BillM
             type="number"
             value={formData.installmentsNumber}
             onChange={(e) => setFormData({ ...formData, installmentsNumber: e.target.value })}
-            placeholder="0"
+            placeholder=""
             error={errors.installmentsNumber}
           />
           <p className="text-sm mt-1" style={{ color: 'var(--color-text-secondary)' }}>
-            Deixe em branco para contas sem parcelamento
+            <strong>Dica:</strong> Deixe em branco para contas recorrentes (mensalidades).
+            <br />
+            Use 1 para contas do mês (pagamento único).
+            <br />
+            Informe o número de parcelas para compras parceladas (2, 3, 4...).
           </p>
         </div>
       </form>
