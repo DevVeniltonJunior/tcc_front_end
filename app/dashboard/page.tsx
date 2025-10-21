@@ -50,8 +50,7 @@ export default function DashboardPage() {
   const handleCreateBill = async (data: CreateBillRequest | UpdateBillRequest) => {
     try {
       await billService.createBill(data as CreateBillRequest);
-      await fetchSummary(); // Atualiza o resumo após criar a conta
-      alert('Conta criada com sucesso!');
+      router.push('/contas');
     } catch (error) {
       console.error('Erro ao criar conta:', error);
       throw error;
@@ -61,8 +60,7 @@ export default function DashboardPage() {
   const handleCreatePlanning = async (data: CreatePlanningRequest | UpdatePlanningRequest) => {
     try {
       await planningService.createPlanning(data as CreatePlanningRequest);
-      await fetchSummary(); // Atualiza o resumo após criar o planejamento
-      alert('Planejamento criado com sucesso!');
+      router.push('/planejamento');
     } catch (error) {
       console.error('Erro ao criar planejamento:', error);
       throw error;
@@ -72,8 +70,7 @@ export default function DashboardPage() {
   const handleGeneratePlanning = async (data: GeneratePlanningRequest) => {
     try {
       await planningService.generatePlanning(data);
-      await fetchSummary(); // Atualiza o resumo após gerar o planejamento
-      alert('Planejamento gerado com sucesso pela IA!');
+      router.push('/planejamento');
     } catch (error) {
       console.error('Erro ao gerar planejamento:', error);
       throw error;
