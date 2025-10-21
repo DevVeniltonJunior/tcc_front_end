@@ -1,94 +1,128 @@
-# Sistema de Gerenciamento Financeiro - Front-end
+# FinAppAI — Personal Finance Manager (Frontend)
 
-Interface web moderna e intuitiva para o Sistema de Gerenciamento Financeiro Pessoal, desenvolvida com Next.js 15 e TypeScript.
+Modern, responsive web interface for managing personal finances, built with Next.js 15 and TypeScript.
 
-## 📋 Sobre o Projeto
+## 📋 Overview
 
-Este é o front-end do Sistema de Gerenciamento Financeiro, uma aplicação web completa que permite aos usuários:
+This is the frontend for FinAppAI. It enables users to:
 
-- 👤 Registrar e autenticar usuários
-- 💰 Gerenciar contas e despesas pessoais
-- 📊 Criar e gerenciar planejamentos financeiros
-- 🤖 Gerar planejamentos financeiros automaticamente usando IA
-- 🔐 Recuperar senha via email
-- 📱 Interface responsiva e moderna
+- 👤 Register and authenticate
+- 💰 Manage bills/expenses
+- 📊 Create and manage financial plannings
+- 🤖 Generate AI-assisted financial plans
+- 🔐 Recover password via email
+- 📱 Use a clean, responsive UI
 
-## 🔗 API Backend
+## 🔗 Backend API
 
-Este front-end consome uma API REST. Para mais detalhes sobre a API e todos os endpoints disponíveis, consulte o arquivo [`api.md`](./api.md).
+This app consumes a REST API. Configure the base URL via environment variables (see Environment section). The client expects endpoints for authentication, users, bills, plannings, and AI plan generation.
 
-## 🚀 Tecnologias
+## 🚀 Tech Stack
 
-Este projeto foi desenvolvido com as seguintes tecnologias:
+- **[Next.js 15](https://nextjs.org/)** — React framework with App Router
+- **[React 19](https://react.dev/)**
+- **[TypeScript](https://www.typescriptlang.org/)**
+- **[Tailwind CSS](https://tailwindcss.com/)**
+- **[Axios](https://axios-http.com/)**
 
-- **[Next.js 15](https://nextjs.org/)** - Framework React com App Router
-- **[TypeScript](https://www.typescriptlang.org/)** - JavaScript tipado para maior segurança e produtividade
-- **[TailwindCSS](https://tailwindcss.com/)** - Framework CSS utilitário para estilização
-- **[Axios](https://axios-http.com/)** - Cliente HTTP para comunicação com o backend
-- **[React Hook Form](https://react-hook-form.com/)** - Gerenciamento de formulários performático
-- **[Zod](https://zod.dev/)** - Validação de schemas TypeScript-first
+## 📦 Getting Started
 
-## 📦 Instalação e Configuração
+### Requirements
 
-### Pré-requisitos
+- Node.js v18+
+- npm, yarn, or pnpm
+- Running Backend API
 
-- **Node.js** v18 ou superior
-- **npm** ou **yarn** ou **pnpm**
-- **API Backend**
+### Environment Variables
 
-### Variáveis de Ambiente
+Use the provided example and create your `.env` file at the project root:
 
-Crie um arquivo `.env.local` na raiz do projeto:
+```bash
+cp .env.example .env
+```
+
+Configure at least:
 
 ```env
+# Port used by the Next.js dev/prod server (optional; defaults to 3001 in scripts)
+PORT=3001
+
+# Base URL of the backend API
 NEXT_PUBLIC_API_URL=http://localhost:3000
 ```
 
-### Executando o Projeto
+Notes:
+- The Axios client reads `NEXT_PUBLIC_API_URL` and falls back to `http://localhost:3000` if not provided.
+- The dev/start scripts default to port 3001 when `PORT` is not set.
+
+### Install & Run
 
 ```bash
-# Modo de desenvolvimento
+# Install dependencies
+npm install
+
+# Development (defaults to http://localhost:3001)
 npm run dev
 
-# Build para produção
+# Production build
 npm run build
 
-# Iniciar em produção
+# Start production server (defaults to http://localhost:3001)
 npm run start
+
+# Lint
+npm run lint
 ```
 
-## 🎨 Funcionalidades
+## 🧭 App Routes (UI)
 
-### Autenticação
-- **Página de Login** - Autenticação de usuários existentes
-- **Página de Registro** - Cadastro de novos usuários
-- **Recuperação de Senha** - Fluxo completo de reset de senha via email
-- **Proteção de Rotas** - Rotas privadas que requerem autenticação
+- `/login` — Sign in
+- `/register` — Sign up
+- `/dashboard` — Overview and user summary
+- `/contas` — Bills/expenses management
+- `/planejamento` — Plannings list and creation (manual and AI)
+- `/settings` — Profile and preferences
 
-### Gerenciamento de Contas
-- **Listar Contas** - Visualização de todas as contas/despesas
-- **Adicionar Conta** - Formulário para criar novas contas
-- **Editar Conta** - Atualização de contas existentes
-- **Remover Conta** - Exclusão de contas (soft delete)
-- **Filtros e Busca** - Filtrar contas por diversos critérios
+## 📚 API Integration (expected endpoints)
 
-### Planejamentos Financeiros
-- **Listar Planejamentos** - Visualização de todos os planejamentos
-- **Criar Planejamento Manual** - Formulário para criar planejamentos
-- **Gerar com IA** - Criar planejamento automaticamente usando IA
-- **Editar Planejamento** - Atualização de planejamentos existentes
-- **Remover Planejamento** - Exclusão de planejamentos
-- **Acompanhamento** - Visualizar progresso dos objetivos
+The frontend uses these endpoints (relative to `NEXT_PUBLIC_API_URL`):
 
-### Perfil do Usuário
-- **Dados Pessoais** - Visualizar e editar informações do usuário
-- **Alterar Senha** - Atualizar senha do usuário
-- **Configurações** - Preferências da aplicação
+- Auth: `POST /register`, `POST /login`, `POST /forgot-password?email=...`, `POST /reset-password?token=...`
+- Users: `GET /user`, `GET /users`, `POST /users`, `PUT /users`, `DELETE /users/:id`, `GET /user-summary`
+- Bills: `GET /bills`, `GET /bill?id=...`, `POST /bills`, `PUT /bills`, `DELETE /bills/:id`
+- Plannings: `GET /plannings`, `GET /planning?id=...`, `POST /plannings`, `PUT /plannings`, `DELETE /plannings/:id`, `POST /generate-planning`
 
-## 📄 Licença
+Security/UX behavior:
+- JWT is stored in `localStorage` and automatically attached as `Authorization: Bearer <token>`.
+- On `401` responses, local auth is cleared and the app redirects to `/login`.
 
-Este projeto é um TCC (Trabalho de Conclusão de Curso).
+## 🎨 Features
+
+### Authentication
+- Login and registration
+- Password recovery via email
+- Protected routes for authenticated users
+
+### Bills Management
+- List, create, edit, and delete bills
+- Filtering and pagination
+
+### Financial Plannings
+- List all plannings
+- Create planning manually
+- Generate planning with AI assistance
+- Edit and delete plannings
+- Track progress of goals
+
+### User Profile
+- View and edit personal data
+- Update password
+- App settings/preferences
+
+## 📄 License / Academic Note
+
+This project is part of an academic graduation thesis (TCC).
 
 ---
 
-**Desenvolvido com ❤️ usando Next.js 15 + TypeScript + TailwindCSS**
+Built with ❤️ using Next.js 15 + TypeScript + Tailwind CSS
