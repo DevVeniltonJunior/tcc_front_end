@@ -56,7 +56,6 @@ export interface AuthResponse {
 }
 
 export interface CreateBillRequest {
-  userId: string;
   name: string;
   value: number;
   description?: string;
@@ -72,7 +71,6 @@ export interface UpdateBillRequest {
 }
 
 export interface CreatePlanningRequest {
-  userId: string;
   name: string;
   description?: string;
   goal: string;
@@ -81,7 +79,6 @@ export interface CreatePlanningRequest {
 }
 
 export interface GeneratePlanningRequest {
-  userId: string;
   goal: string;
   goalValue: number;
   description?: string;

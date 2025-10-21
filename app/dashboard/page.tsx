@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { useAuth } from '@/lib/hooks/useAuth';
 import Loading from '@/components/Loading';
 import Button from '@/components/Button';
+import Tabs from '@/components/Tabs';
 import { userService } from '@/lib/services';
 import { UserSummary } from '@/types';
 
@@ -68,6 +69,9 @@ export default function DashboardPage() {
           </div>
         </div>
       </header>
+
+      {/* Tabs */}
+      <Tabs />
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
