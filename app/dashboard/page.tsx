@@ -86,64 +86,37 @@ export default function DashboardPage() {
             <p className="text-sm mt-2" style={{ color: 'var(--color-text-secondary)' }}>Total de contas cadastradas</p>
           </div>
 
-          {/* Card 2 - Total Mensal */}
+          {/* Card 1 - Planejamentos Ativos */}
+          <div className="rounded-lg shadow p-6" style={{ backgroundColor: 'var(--color-surface)', border: '1px solid var(--color-border)' }}>
+            <h2 className="text-lg font-semibold mb-2" style={{ color: 'var(--color-text-secondary)' }}>Planejamentos Ativos</h2>
+            <p className="text-3xl font-bold" style={{ color: 'var(--color-primary)' }}>
+              {summary?.planningsCount || 0}
+            </p>
+            <p className="text-sm mt-2" style={{ color: 'var(--color-text-secondary)' }}>Total de planejamentos cadastrados</p>
+          </div>
+
+          {/* Card 3 - Total Mensal */}
           <div className="rounded-lg shadow p-6" style={{ backgroundColor: 'var(--color-surface)', border: '1px solid var(--color-border)' }}>
             <h2 className="text-lg font-semibold mb-2" style={{ color: 'var(--color-text-secondary)' }}>Total Mensal</h2>
             <p className="text-3xl font-bold" style={{ color: 'var(--color-primary)' }}>
-              R$ {summary?.totalValue?.toFixed(2) || '0.00'}
+              R$ {summary?.totalBillsValueMonthly?.toFixed(2) || '0.00'}
             </p>
             <p className="text-sm mt-2" style={{ color: 'var(--color-text-secondary)' }}>Despesas deste mês</p>
           </div>
 
-          {/* Card 3 - Salário */}
+          {/* Card 4 - Salário */}
           <div className="rounded-lg shadow p-6" style={{ backgroundColor: 'var(--color-surface)', border: '1px solid var(--color-border)' }}>
             <h2 className="text-lg font-semibold mb-2" style={{ color: 'var(--color-text-secondary)' }}>Salário</h2>
             <p className="text-3xl font-bold" style={{ color: 'var(--color-success)' }}>
-              {user.salary ? `R$ ${user.salary.toFixed(2)}` : 'Não informado'}
+              {summary?.salary ? `R$ ${summary?.salary.toFixed(2)}` : 'Não informado'}
             </p>
             <p className="text-sm mt-2" style={{ color: 'var(--color-text-secondary)' }}>Renda mensal</p>
           </div>
         </div>
 
-        {/* Detail Cards - Row 2 */}
+        {/* Projection Cards - Row 2 */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          {/* Card 4 - Contas Fixas */}
-          <div className="rounded-lg shadow p-6" style={{ backgroundColor: 'var(--color-surface)', border: '1px solid var(--color-border)' }}>
-            <h2 className="text-lg font-semibold mb-2" style={{ color: 'var(--color-text-secondary)' }}>Contas Fixas</h2>
-            <p className="text-3xl font-bold" style={{ color: 'var(--color-primary)' }}>
-              R$ {summary?.totalFixedBillsValue?.toFixed(2) || '0.00'}
-            </p>
-            <p className="text-sm mt-2" style={{ color: 'var(--color-text-secondary)' }}>
-              {summary?.fixesBillsNames || 'Nenhuma conta fixa'}
-            </p>
-          </div>
-
-          {/* Card 5 - Parceladas */}
-          <div className="rounded-lg shadow p-6" style={{ backgroundColor: 'var(--color-surface)', border: '1px solid var(--color-border)' }}>
-            <h2 className="text-lg font-semibold mb-2" style={{ color: 'var(--color-text-secondary)' }}>Parceladas</h2>
-            <p className="text-3xl font-bold" style={{ color: 'var(--color-primary)' }}>
-              R$ {summary?.totalInstallmentValue?.toFixed(2) || '0.00'}
-            </p>
-            <p className="text-sm mt-2" style={{ color: 'var(--color-text-secondary)' }}>
-              {summary?.installmentBillsNames || 'Nenhuma conta parcelada'}
-            </p>
-          </div>
-
-          {/* Card 6 - Mensais Avulsas */}
-          <div className="rounded-lg shadow p-6" style={{ backgroundColor: 'var(--color-surface)', border: '1px solid var(--color-border)' }}>
-            <h2 className="text-lg font-semibold mb-2" style={{ color: 'var(--color-text-secondary)' }}>Mensais Avulsas</h2>
-            <p className="text-3xl font-bold" style={{ color: 'var(--color-primary)' }}>
-              R$ {summary?.totalMonthlyMiscBillsValue?.toFixed(2) || '0.00'}
-            </p>
-            <p className="text-sm mt-2" style={{ color: 'var(--color-text-secondary)' }}>
-              {summary?.monthlyMiscBillsNames || 'Nenhuma conta avulsa'}
-            </p>
-          </div>
-        </div>
-
-        {/* Projection Cards - Row 3 */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          {/* Card 7 - Próximo Mês */}
+          {/* Card 5 - Próximo Mês */}
           <div className="rounded-lg shadow p-6" style={{ backgroundColor: 'var(--color-surface)', border: '1px solid var(--color-border)' }}>
             <h2 className="text-lg font-semibold mb-2" style={{ color: 'var(--color-text-secondary)' }}>Próximo Mês</h2>
             <p className="text-3xl font-bold" style={{ color: 'var(--color-warning)' }}>
@@ -152,7 +125,7 @@ export default function DashboardPage() {
             <p className="text-sm mt-2" style={{ color: 'var(--color-text-secondary)' }}>Projeção de gastos</p>
           </div>
 
-          {/* Card 8 - Daqui 2 Meses */}
+          {/* Card 6 - Daqui 2 Meses */}
           <div className="rounded-lg shadow p-6" style={{ backgroundColor: 'var(--color-surface)', border: '1px solid var(--color-border)' }}>
             <h2 className="text-lg font-semibold mb-2" style={{ color: 'var(--color-text-secondary)' }}>Daqui 2 Meses</h2>
             <p className="text-3xl font-bold" style={{ color: 'var(--color-warning)' }}>
@@ -161,7 +134,7 @@ export default function DashboardPage() {
             <p className="text-sm mt-2" style={{ color: 'var(--color-text-secondary)' }}>Projeção de gastos</p>
           </div>
 
-          {/* Card 9 - Daqui 3 Meses */}
+          {/* Card 7 - Daqui 3 Meses */}
           <div className="rounded-lg shadow p-6" style={{ backgroundColor: 'var(--color-surface)', border: '1px solid var(--color-border)' }}>
             <h2 className="text-lg font-semibold mb-2" style={{ color: 'var(--color-text-secondary)' }}>Daqui 3 Meses</h2>
             <p className="text-3xl font-bold" style={{ color: 'var(--color-warning)' }}>

@@ -148,17 +148,14 @@ export interface UserFilters {
 }
 
 export interface UserSummary {
-  billsActiveCount: number;
-  totalBillAmount: number;
-  totalValue: number;
-  totalInstallmentValue: number;
-  totalFixedBillsValue: number;
-  totalMonthlyMiscBillsValue: number;
-  partialValueNextMonth: number;
-  partialValue2MonthsLater: number;
-  partialValue3MonthsLater: number;
-  fixesBillsNames: string;
-  monthlyMiscBillsNames: string;
-  installmentBillsNames: string;
+  id: string,
+  name: string,
+  salary: number | null | undefined,
+  billsActiveCount: number,
+  planningsCount: number,
+  totalBillsValueMonthly: number,
+  partialValueNextMonth: number,
+  partialValue2MonthsLater: number,
+  partialValue3MonthsLater: number
 }
 
