@@ -56,7 +56,7 @@ export default function RegisterPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4 py-8" style={{ background: 'var(--color-bg)' }}>
-      <div className="max-w-md w-full rounded-xl shadow-lg p-8" style={{ backgroundColor: 'var(--color-surface)' }}>
+      <div className="max-w-md w-full rounded-xl shadow-lg p-4 sm:p-6 md:p-8" style={{ backgroundColor: 'var(--color-surface)' }}>
         <div className="flex justify-center mb-2">
           <Image 
             src="/finappai_logo.svg" 
@@ -64,12 +64,13 @@ export default function RegisterPage() {
             width={280} 
             height={93}
             priority
+            className="w-full max-w-[220px] sm:max-w-[250px] md:max-w-[280px] h-auto"
           />
         </div>
-        <h1 className="text-3xl font-bold mb-2 text-center" style={{ color: 'var(--color-text-primary)' }}>
+        <h1 className="text-2xl sm:text-3xl font-bold mb-2 text-center" style={{ color: 'var(--color-text-primary)' }}>
           Crie sua conta
         </h1>
-        <p className="mb-6 text-center" style={{ color: 'var(--color-text-secondary)' }}>
+        <p className="mb-4 sm:mb-6 text-sm sm:text-base text-center" style={{ color: 'var(--color-text-secondary)' }}>
           Comece a gerenciar suas finanças com IA
         </p>
 

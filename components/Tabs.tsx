@@ -23,9 +23,9 @@ export default function Tabs() {
   };
 
   return (
-    <div className="border-b" style={{ borderColor: 'var(--color-border)' }}>
+    <div className="border-b overflow-x-auto" style={{ borderColor: 'var(--color-border)' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <nav className="flex space-x-8" aria-label="Tabs">
+        <nav className="flex space-x-4 sm:space-x-6 md:space-x-8 min-w-max sm:min-w-0" aria-label="Tabs">
           {tabs.map((tab) => {
             const isActive = pathname === tab.path;
             return (
@@ -33,7 +33,7 @@ export default function Tabs() {
                 key={tab.id}
                 onClick={() => handleTabClick(tab.path)}
                 className={`
-                  py-4 px-1 border-b-2 font-medium text-sm transition-colors
+                  py-3 sm:py-4 px-1 border-b-2 font-medium text-xs sm:text-sm transition-colors whitespace-nowrap
                   ${isActive
                     ? 'border-blue-500'
                     : 'border-transparent hover:border-gray-300'

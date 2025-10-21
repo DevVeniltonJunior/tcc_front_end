@@ -11,7 +11,7 @@ export default function Button({
   className = '',
   ...props 
 }: ButtonProps) {
-  const baseClasses = 'px-4 py-2 rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed';
+  const baseClasses = 'px-3 sm:px-4 py-2 rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base';
   
   const variantStyles = {
     primary: {
@@ -38,7 +38,7 @@ export default function Button({
     >
       {loading ? (
         <div className="flex items-center justify-center">
-          <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2" style={{ borderTopColor: variant === 'primary' ? 'var(--color-bg)' : 'var(--color-primary)', borderBottomColor: variant === 'primary' ? 'var(--color-bg)' : 'var(--color-primary)' }}></div>
+          <div className="animate-spin rounded-full h-4 w-4 sm:h-5 sm:w-5 border-t-2 border-b-2" style={{ borderTopColor: variant === 'primary' ? 'var(--color-bg)' : 'var(--color-primary)', borderBottomColor: variant === 'primary' ? 'var(--color-bg)' : 'var(--color-primary)' }}></div>
         </div>
       ) : (
         children

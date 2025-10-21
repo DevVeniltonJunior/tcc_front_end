@@ -151,7 +151,7 @@ export default function BillModal({ isOpen, onClose, onSave, bill, mode }: BillM
             placeholder=""
             error={errors.installmentsNumber}
           />
-          <p className="text-sm mt-1" style={{ color: 'var(--color-text-secondary)' }}>
+          <p className="text-xs sm:text-sm mt-1" style={{ color: 'var(--color-text-secondary)' }}>
             <strong>Dica:</strong> Deixe em branco para contas recorrentes (mensalidades).
             <br />
             Use 1 para contas do mês (pagamento único).

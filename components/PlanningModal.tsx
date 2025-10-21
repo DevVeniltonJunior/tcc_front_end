@@ -163,7 +163,7 @@ export default function PlanningModal({ isOpen, onClose, onSave, planning, mode 
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-2" style={{ color: 'var(--color-text-primary)' }}>
+          <label className="block text-xs sm:text-sm font-medium mb-2" style={{ color: 'var(--color-text-primary)' }}>
             Plano de Ação <span style={{ color: 'var(--color-error)' }}>*</span>
           </label>
           <textarea
@@ -171,7 +171,7 @@ export default function PlanningModal({ isOpen, onClose, onSave, planning, mode 
             onChange={(e) => setFormData({ ...formData, plan: e.target.value })}
             placeholder="Descreva seu plano de ação para alcançar esta meta..."
             rows={6}
-            className="w-full px-4 py-2 rounded-lg border transition-colors"
+            className="w-full px-3 sm:px-4 py-2 rounded-lg border transition-colors text-sm sm:text-base"
             style={{
               backgroundColor: 'var(--color-bg)',
               borderColor: errors.plan ? 'var(--color-error)' : 'var(--color-border)',
@@ -180,7 +180,7 @@ export default function PlanningModal({ isOpen, onClose, onSave, planning, mode 
             required
           />
           {errors.plan && (
-            <p className="text-sm mt-1" style={{ color: 'var(--color-error)' }}>
+            <p className="text-xs sm:text-sm mt-1" style={{ color: 'var(--color-error)' }}>
               {errors.plan}
             </p>
           )}

@@ -88,8 +88,8 @@ export default function GeneratePlanningModal({ isOpen, onClose, onGenerate }: G
         </>
       }
     >
-      <div className="mb-4 p-4 rounded-lg" style={{ backgroundColor: 'var(--color-bg)' }}>
-        <p className="text-sm" style={{ color: 'var(--color-text-secondary)' }}>
+      <div className="mb-4 p-3 sm:p-4 rounded-lg" style={{ backgroundColor: 'var(--color-bg)' }}>
+        <p className="text-xs sm:text-sm" style={{ color: 'var(--color-text-secondary)' }}>
           A IA irá analisar sua meta e criar um planejamento financeiro personalizado para você alcançá-la.
         </p>
       </div>
@@ -129,7 +129,7 @@ export default function GeneratePlanningModal({ isOpen, onClose, onGenerate }: G
             placeholder="Prazo desejado, preferências, etc."
             error={errors.description}
           />
-          <p className="text-sm mt-1" style={{ color: 'var(--color-text-secondary)' }}>
+          <p className="text-xs sm:text-sm mt-1" style={{ color: 'var(--color-text-secondary)' }}>
             Quanto mais detalhes, melhor será o planejamento gerado pela IA.
           </p>
         </div>

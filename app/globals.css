@@ -15,10 +15,17 @@
   --color-accent: #2EE6D6;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 body {
   color: var(--color-text-primary);
   background: var(--color-bg);
   font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
 }
 
 @layer utilities {

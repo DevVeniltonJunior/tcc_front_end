@@ -32,7 +32,7 @@ export default function Modal({ isOpen, onClose, title, children, footer }: Moda
 
   return (
     <div 
-      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4"
       style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
       onClick={onClose}
     >
@@ -43,15 +43,15 @@ export default function Modal({ isOpen, onClose, title, children, footer }: Moda
       >
         {/* Header */}
         <div 
-          className="flex justify-between items-center p-6 border-b"
+          className="flex justify-between items-center p-4 sm:p-5 md:p-6 border-b"
           style={{ borderColor: 'var(--color-border)' }}
         >
-          <h2 className="text-2xl font-bold" style={{ color: 'var(--color-text-primary)' }}>
+          <h2 className="text-lg sm:text-xl md:text-2xl font-bold" style={{ color: 'var(--color-text-primary)' }}>
             {title}
           </h2>
           <button
             onClick={onClose}
-            className="text-2xl font-bold hover:opacity-70 transition-opacity"
+            className="text-2xl sm:text-3xl font-bold hover:opacity-70 transition-opacity"
             style={{ color: 'var(--color-text-secondary)' }}
           >
             ×
@@ -59,14 +59,14 @@ export default function Modal({ isOpen, onClose, title, children, footer }: Moda
         </div>
 
         {/* Content */}
-        <div className="p-6">
+        <div className="p-4 sm:p-5 md:p-6">
           {children}
         </div>
 
         {/* Footer */}
         {footer && (
           <div 
-            className="flex justify-end gap-3 p-6 border-t"
+            className="flex flex-col-reverse sm:flex-row justify-end gap-2 sm:gap-3 p-4 sm:p-5 md:p-6 border-t"
             style={{ borderColor: 'var(--color-border)' }}
           >
             {footer}
