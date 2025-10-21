@@ -1,5 +1,5 @@
 import api from '../api';
-import { Planning, CreatePlanningRequest, UpdatePlanningRequest, GeneratePlanningRequest, PlanningFilters } from '@/types';
+import { Planning, CreatePlanningRequest, UpdatePlanningRequest, GeneratePlanningRequest, PlanningFilters, PaginatedResponse } from '@/types';
 
 export const planningService = {
   async getPlanning(id: string): Promise<Planning> {
@@ -7,9 +7,15 @@ export const planningService = {
     return response.data;
   },
 
-  async getPlannings(filters?: PlanningFilters): Promise<Planning[]> {
-    const response = await api.get<Planning[]>('/plannings', { params: filters });
-    return response.data;
+  async getPlannings(
+    filters?: PlanningFilters,    
+    page: number = 1,
+    limit: number = 20,
+    sortBy: string = "createdAt",
+    order: string = "desc"
+  ): Promise<Planning[]> {
+    const response = await api.get<PaginatedResponse<Planning>>('/plannings', { params: { ...filters, page, limit, sortBy, order } });
+    return response.data.data;
   },
 
   async createPlanning(data: CreatePlanningRequest): Promise<Planning> {

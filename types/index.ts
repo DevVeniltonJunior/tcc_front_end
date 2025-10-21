@@ -159,3 +159,11 @@ export interface UserSummary {
   partialValue3MonthsLater: number
 }
 
+// Tipo de resposta paginada
+export interface PaginatedResponse<T> {
+  data: T[];
+  total: number;
+  page: number;
+  limit: number;
+}
+

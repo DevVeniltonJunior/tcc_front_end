@@ -1,5 +1,5 @@
 import api from '../api';
-import { Bill, CreateBillRequest, UpdateBillRequest, BillFilters } from '@/types';
+import { Bill, CreateBillRequest, UpdateBillRequest, BillFilters, PaginatedResponse } from '@/types';
 
 export const billService = {
   async getBill(id: string): Promise<Bill> {
@@ -7,9 +7,15 @@ export const billService = {
     return response.data;
   },
 
-  async getBills(filters?: BillFilters): Promise<Bill[]> {
-    const response = await api.get<Bill[]>('/bills', { params: filters });
-    return response.data;
+  async getBills(
+    filters?: BillFilters,
+    page: number = 1,
+    limit: number = 20,
+    sortBy: string = "createdAt",
+    order: string = "desc"
+  ): Promise<Bill[]> {
+    const response = await api.get<PaginatedResponse<Bill>>('/bills', { params: { ...filters, page, limit, sortBy, order } });
+    return response.data.data;
   },
 
   async createBill(data: CreateBillRequest): Promise<Bill> {
